@@ -1,0 +1,73 @@
+---
+title: "Matrices"
+output: html_notebook
+---
+
+You can create the matrix using the matrix() function and using the following format
+
+```{r}
+P = matrix (
+c(2 , 4 , 3 , 1 , 5 , 7) , 
+nrow =2 , 
+ncol =3 , 
+byrow = TRUE )
+```
+
+```{r}
+print(P)
+```
+Sum the values in the first row.
+```{r}
+sum(P[1,])
+```
+Sum the values in the first column.
+```{r}
+sum(P[,1])
+```
+Specify names for rows (“Row1, Row2”) and columns (“Col1”, “Col2”).
+```{r}
+dimnames(P)=list(
+  c("Row1","Row2"),c("Col1","Col2","Col3")
+)
+```
+```{r}
+P
+```
+Select the second row in the matrix p using its name (“Row2”)
+```{r}
+P["Row2",]
+```
+Remove the third column from matrix p.
+```{r}
+P1=P[,-3]
+```
+```{r}
+P1
+```
+Add the column back again.
+```{r}
+P1=cbind(P1,P[,3])
+colnames(P)[3]="Col3"
+P1
+```
+Create a matrix to represent the medal table for the 2000 Olympics shown here:
+https://olympics.com/en/olympic-games/sydney-2000/medals. If you just want
+to use the first few countries that’s fine. Assign names to the (Country) rows and
+medal type (columns).
+
+```{r}
+Olympics2000 = matrix (
+c(1,1,3,0,2,2,0,0,1,16,25,17) , 
+nrow =4 , 
+ncol =3 , 
+byrow = TRUE )
+Olympics2000
+```
+```{r}
+dimnames(Olympics2000)=list(
+  c("Algeria","Argentina","Armenia","Australia"),c("Gold","Silver","Bronze")
+)
+```
+```{r}
+Olympics2000
+```

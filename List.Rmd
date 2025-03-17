@@ -1,0 +1,27 @@
+---
+title: "List"
+output: html_notebook
+---
+
+First, create a list that contains three elements: i) a single character ’f”, (ii) a single
+number 1, and (iii) a numeric vector (7,8,9) using the following line of code:
+
+```{r}
+a <-list ( " f " , 1 , c(7 ,8 ,9))
+a
+```
+Return the elements 1 and 3 as a list.
+
+```{r}
+a[c(1,3)]
+```
+Provide each element position a name (e.g., “One”, “Two”, “Three”).
+```{r}
+names(a)=c("One","Two","Three")
+```
+
+Select the first and third element using their name.
+```{r}
+a$One
+a$Three
+```
