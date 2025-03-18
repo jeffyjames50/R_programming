@@ -1,0 +1,131 @@
+---
+title: "Data Transformation in R"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+data(mpg)
+```
+
+3.1 Selecting rows/observations – filter()
+==========================================
+
+```{r}
+filter (mpg,manufacturer=="audi")
+```
+```{r}
+filter ( mpg , displ > 2)
+```
+```{r}
+filter ( mpg , displ >= 2)
+```
+```{r}
+filter ( mpg , displ > 2 & cyl > 6)
+```
+```{r}
+filter ( mpg , manufacturer == "audi" , year ==1999)
+filter ( mpg , manufacturer == "audi" & year ==1999)
+```
+
+1. Filter rows where the manufacturer is Audi or the year of production (year) is 1999.
+
+```{r}
+
+filter ( mpg , manufacturer == "audi" | year==1999)
+```
+2. Filter rows where the year of production (year) is 1999 and the manufacturer is NOT Audi.
+
+```{r}
+filter(mpg,manufacturer!="audi" & year==1999)
+```
+```{r}
+filter ( mpg , ( manufacturer == "audi" | manufacturer == "chevrolet") ,year ==1999)
+
+```
+```{r}
+filter ( mpg , ( manufacturer %in% c( "audi" ,"chevrolet" )) ,year ==1999)
+```
+```{r}
+filter ( mpg , ( manufacturer %in% c( "audi" ,"chevrolet" )) ,
+year ==1999) %>%
+count ( manufacturer )
+```
+```{r}
+sample_frac ( mpg , 0.05 , replace = TRUE )
+```
+```{r}
+sample_n ( mpg , 10 , replace = TRUE )
+```
+
+
+3.2 Reordering rows – arrange()
+===============================
+1. To better view the ordered tibble, pipe the results of the arrange function into the
+function View. Make sure that ties between countries with the same number of gold
+and silver medals are sorted based on the number of bronze medals.
+
+```{r}
+beijing2022Medals <-read_csv("Beijing2022.csv")
+arrange(beijing2022Medals,desc(Gold),desc(Silver),desc(Bronze)) %>% view(title="Beijing Medal")
+
+```
+3.3 Selecting columns - select()
+================================
+
+```{r}
+select ( mpg , manufacturer , hwy )
+```
+
+
+```{r}
+select ( mpg , starts_with ( "d" ))
+```
+```{r}
+select ( mpg , manufacturer , hwy ) %>%
+filter ( manufacturer == "chevrolet" & hwy >=20)
+```
+```{r}
+select ( mpg , manufacturer , hwy ) %>%
+filter ( manufacturer !="chevrolet" & hwy >=20) %>%
+arrange ( desc ( manufacturer ))
+```
+```{r}
+mpg %>% select ( manufacturer , hwy ) %>%
+filter ( manufacturer !="chevrolet" & hwy >=20) %>%
+arrange ( desc ( manufacturer ))
+```
+
+3.4 Creating new variables – mutate()
+=====================================
+
+```{r}
+mutate ( beijing2022Medals , Total = Gold + Silver + Bronze )
+```
+3.5 Collapse many values down to a single summary – summarise()
+===============================================================
+
+```{r}
+summarise(mpg,avg=mean(hwy))
+
+```
+```{r}
+group_by(mpg,year,manufacturer) %>% summarise(count=n ())
+```
+```{r}
+group_by(mpg,manufacturer) %>% summarise(count = n())
+```
+1. How many unique models do each manufacturer produce? 
+
+```{r}
+group_by(mpg,manufacturer) %>% summarise(UniqueModels = n_distinct(model))
+```
+Create a new column with a ratio of highway (hwy) vs city (cty) range called HwyCtyRatio.
+
+```{r}
+mutate(mpg,HwyCtyRatio=hwy/cty)
+```
+
