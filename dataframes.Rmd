@@ -1,0 +1,80 @@
+---
+title: "Data Frames"
+output: html_notebook
+---
+
+```{r}
+medals <-data.frame ( Country =c( "NOR" , "GER" , "CHN" ) ,
+Gold =c(16 ,12 ,9) ,
+Silver =c(8 ,10 ,4) ,
+Bronze =c(13 ,5 ,2))
+medals
+```
+Select the first and third rows and the first and third columns
+
+```{r}
+medals[c(1,3),c(1,3)]
+```
+Return a data frame that contains just the CHN row
+
+```{r}
+medals[medals$Country=="CHN",]
+```
+Return a data frame that contains the medals of Norway and Germany.
+
+```{r}
+med_nor_ger <-medals[medals$Country=="NOR"|medals$Country=="GER",]
+med_nor_ger
+```
+Select countries who won ten or more gold medals and return the Country and Gold
+columns using the subset() command.
+
+```{r}
+subset(medals,Gold>=10,select= c(Country,Gold))
+```
+Sort the medals by bronze (descending)
+
+```{r}
+medals[order(-medals$Bronze),]
+```
+```{r}
+beijing2022Medals <-read.csv("Beijing2022.csv",header=TRUE)
+beijing2022Medals
+```
+Similar to what we did before try and compute the total number of medals won for
+each country and add this as a fifth column to beijing2022Medals.
+
+
+```{r}
+beijing2022Medals$TotalMedals <- beijing2022Medals$Gold + beijing2022Medals$Silver +beijing2022Medals$Bronze
+beijing2022Medals
+```
+Order the rows by the total number of medals won.
+
+```{r}
+beijing2022Medals[order(-beijing2022Medals$TotalMedals),]
+```
+Sort the data first by the number of total medals won (in descending order) and
+then by the number of gold medals won (also in descending order).
+
+```{r}
+beijing2022Medals[order(-beijing2022Medals$TotalMedals,-beijing2022Medals$Gold),]
+```
+Calculate the total number of gold, silver and bronze medals won at Beijing 2022
+
+```{r}
+total_gold<-sum(beijing2022Medals$Gold)
+total_silver<-sum(beijing2022Medals$Silver)
+total_bronze<-sum(beijing2022Medals$Bronze)
+print(paste("Total number of Gold :",total_gold))
+print(paste("Total number of Silver :",total_silver))
+print(paste("Total number of Bronze :",total_bronze))
+```
+Work out the overall number of medals won by all countries in the Olympic Games
+in 2022?
+
+```{r}
+total_medals <- sum(beijing2022Medals$Gold + beijing2022Medals$Silver + beijing2022Medals$Bronze)
+total_medals
+```
+
