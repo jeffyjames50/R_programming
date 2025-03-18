@@ -1,0 +1,103 @@
+---
+title: "Vectors"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+Create the following vector x =(1.5 2.8 0.2 3.1)
+
+```{r}
+x=c(1.5,2.8,0.2,3.1)
+```
+
+```{r}
+x
+```
+Check the class of the vector using the class() function
+
+```{r}
+class(x)
+```
+Output the second element of the vector
+
+```{r}
+x[2]
+```
+Output the elements 2 and 3 of the vector
+```{r}
+x[c(2,3)]
+```
+Replace the value of the first element of the vector
+
+```{r}
+x=replace(x,1,5.1)
+```
+```{r}
+x
+```
+Select all elements where the value is greater than 2
+
+```{r}
+x[x>2]
+```
+One very helpful feature of vectors is that if we apply functions they will typically
+be carried out on all of the vectors. Square each value of x and assign it to a new
+variable called x.squared()
+
+```{r}
+ x.squared=x^2
+```
+
+```{r}
+x.squared
+```
+Append the value 5.2 to x
+ 
+```{r}
+x=append(x,5.2)
+```
+```{r}
+x
+```
+ Compute the mean value of the updated vector x and check its length
+
+```{r}
+mean(x)
+```
+```{r}
+length(x)
+```
+Create a named vector containing the number of inhabitants of German Federal
+states
+
+```{r}
+german_population=c(
+  "Baden-Württemberg"=11280257,
+  "Bayern"=13369393 ,
+  "Berlin"=3755251 ,
+  "Brandenburg"=2573135 ,
+  "Bremen"=684864 ,
+  "Hamburg"=1892122 ,
+  "Hessen"=6391360 ,
+  "Mecklenburg-Vorpommern"=1628378 ,
+  "Niedersachsen"=8140242 ,
+  "Nordrhein-Westfalen"=18139116 ,
+  "Rheinland-Pfalz"=4159150 ,
+  "Saarland"=992666 ,
+  "Sachsen"=4086152 ,
+  "Sachsen-Anhalt"=2186643 ,
+  "Schleswig-Holstein"=2953270 ,
+  "Thüringen"=2126846
+)
+```
+
+```{r}
+german_population
+```
+Calculate the total population
+
+```{r}
+sum(german_population)
+```
+
