@@ -1,0 +1,101 @@
+---
+title: "Text mining"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+install.packages("tm") > library(tm)
+```
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+```{r}
+docs <- Corpus(DirSource("./texts" , encoding ="UTF-8" ))
+```
+```{r}
+str(docs)
+```
+```{r}
+summary(docs)
+```
+```{r}
+inspect(docs[1])
+```
+```{r}
+docs[[1]]
+```
+```{r}
+docs[[1]]$meta
+docs[[1]]$content
+
+```
+```{r}
+docs <-tm_map( docs , content_transformer(tolower))
+docs[[1]]$content
+
+```
+```{r}
+docs <-tm_map ( docs , removeWords , stopwords("english"))
+docs[[1]]$content
+```
+```{r}
+docs<-tm_map(docs,removePunctuation)
+docs[[1]]$content
+```
+```{r}
+trumpDTM<-DocumentTermMatrix(docs)
+trumpDTM
+```
+
+```{r}
+inspect(trumpDTM)
+View(inspect(trumpDTM))
+```
+```{r}
+inspect(trumpDTM[1:2,1:2])
+```
+```{r}
+trumpDTMS <- removeSparseTerms(trumpDTM,0.05)
+trumpDTMS
+```
+```{r}
+inspect(trumpDTM[,c("news","fake","america","great")])
+```
+Exercise
+========
+
+Explore in which documents (and with what frequencies) the terms “free”,
+“russia”, and “news” occur in.
+
+```{r}
+inspect(trumpDTM[,c("free","russia","news")])
+```
+
+```{r}
+trumpFreqTerms <- findFreqTerms(trumpDTM,lowfreq=50)
+trumpFreqTerms
+```
+```{r}
+trumpFreqTerms <- colSums(as.matrix(trumpDTM))
+head(trumpFreqTerms)
+```
+
+```{r}
+sort(trumpFreqTerms,decreasing=TRUE)
+```
+```{r}
+trumpFreqTermsDF <-data.frame(word=names(trumpFreqTerms),
+freq=trumpFreqTerms)
+arrange(trumpFreqTermsDF,desc(freq))
+```
+```{r}
+trumpFreqTermsDF100 <- subset(trumpFreqTermsDF,freq >=100)
+arrange(desc(freq))
+barplot(trumpFreqTermsDF100$freq,
+names.arg=trumpFreqTermsDF100$word )
+```
+
