@@ -1,0 +1,130 @@
+---
+title: "Assignment 4"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+3 Simple Linear Regression with R
+---------------------------------
+
+```{r}
+library(tidyverse)
+library(MASS)
+data("women")
+str(women)
+```
+```{r}
+summary(women)
+```
+```{r}
+ggplot(data=women,aes(x=weight,y=height))+geom_point()
+```
+```{r}
+cor.test(women$weight,women$height)
+```
+
+
+```{r}
+womenModel <- lm(height ~ weight, data = women)
+
+```
+
+```{r}
+summary(womenModel)
+```
+```{r}
+ggplot(data=women,aes(x=weight,y=height))+
+geom_point() +
+geom_abline(mapping=aes(slope=womenModel$coefficients[2],
+intercept=womenModel$coefficients[1]),color='red')
+
+```
+```{r}
+plot (womenModel,which=1)
+```
+```{r}
+layout(matrix(1:6,ncol=2,byrow=TRUE))
+plot(womenModel,1:6)
+```
+```{r}
+newWomen<-data.frame(weight=c(130,170))
+predict(womenModel,newdata=newWomen)
+```
+```{r}
+predict(womenModel,newdata=newWomen,interval="confidence")
+```
+```{r}
+predict(womenModel,newdata=newWomen,interval="prediction")
+```
+```{r}
+shapiro.test(women$weight)
+shapiro.test(women$height)
+```
+=========
+Exercise 
+=========
+
+Have a look at the ‘faithful’ dataset (use the help ?faithful to find out more
+about the dataset). Use the lm() function to build a simple regression model to predict
+the eruption time based on the waiting time to the next eruption. 
+
+
+```{r}
+?faithful
+```
+```{r}
+faithfulModel <- lm(eruptions ~ waiting, data = faithful)
+```
+What is the predicted eruption time given a waiting time of 80 mins?
+
+```{r}
+newfaithful<-data.frame(waiting=c(80))
+predict(faithfulModel,newdata = newfaithful)
+```
+
+4 Multiple Linear Regression using R
+------------------------------------
+
+```{r}
+data("mtcars")
+?mtcars
+View(mtcars)
+```
+
+```{r}
+mpgModel<-lm(formula=mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb ,
+data = mtcars )
+summary( mpgModel)
+```
+```{r}
+plot ( mpgModel , which =1)
+```
+```{r}
+mpgPredictions <-data.frame(mpg=mtcars$mpg , pred=mpgModel$fitted.values )
+mpgPredictions
+```
+```{r}
+ggplot ( data = mpgPredictions , aes ( x = mpg , y = pred )) +
+geom_point () +
+geom_abline ( mapping = aes ( slope =1 , intercept =0) , color = 'red')
+```
+```{r}
+reducedModel <-step ( mpgModel , direction = "backward" )
+summary ( reducedModel )
+```
+Exercise 
+
+Build a simple linear regression with just the wt variable – how does the
+quality and fit of the model compare with using all variables and the selected subset using
+step()? What about other subsets?
+
+
+
+```{r}
+newMpgModel <- lm(mpg ~ wt, data = mtcars)
+```
+
+```{r}
+summary(newMpgModel)
+```
