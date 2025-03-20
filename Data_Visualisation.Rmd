@@ -1,0 +1,91 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+```{r}
+install.packages("nycflights13")
+
+```
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+library(nycflights13)
+```
+```{r}
+flightsEdited<-flights%>%
+mutate(date=make_date(year,month,day))
+```
+```{r}
+flightsEdited%>%
+select(year,month,day,date)%>%
+head
+```
+```{r}
+daily <- flightsEdited%>%
+group_by(date)%>%
+summarise(n=n())
+head(daily)
+```
+```{r}
+ggplot(daily,aes(date,n))+geom_line()
+```
+```{r}
+updatedFlightsEdited<- flightsEdited %>%
+mutate(weekday=wday(date,label=TRUE))%>%
+mutate(month=month(date,label=TRUE))
+head(updatedFlightsEdited)
+```
+3.2 Creating a correlation matrix
+
+```{r}
+data("mtcars")
+str(mtcars)
+```
+
+```{r}
+mcor<-cor(mtcars)
+round(mcor,digits=2)
+```
+
+```{r}
+install.packages("corrplot")# if problems then download from CRAN
+library(corrplot)
+corrplot(mcor)
+```
+Exercise
+• Using the cor.test() function, determine the actual correlation score between cyl
+and disp.
+```{r}
+result <- cor.test(mtcars$cyl, mtcars$disp)
+coefficient <- result$estimate
+print(coefficient)
+```
+3.3 Creating a heatmap
+
+```{r}
+nba<-read.csv("http://datasets.flowingdata.com/ppg2008.csv" , sep = "," )
+head(nba)
+```
+
+```{r}
+row.names(nba)<-nba$Name
+head(nba)
+```
+```{r}
+nba<-nba[,2:20]
+```
+
+```{r}
+nbaMatrix<-data.matrix(nba)
+```
+
+```{r}
+heatmap(nbaMatrix,Rowv=NA,Colv=NA,col=heat.colors(256),
+scale="column",margins=c(5,10))
+```
